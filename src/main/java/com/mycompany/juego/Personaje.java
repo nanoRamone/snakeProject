@@ -4,7 +4,7 @@ package com.mycompany.juego;
 public abstract class Personaje {
     protected String nombre;
     protected Posicion posicion;
-
+    //prueba de commit
     // Constructor con nombre y posición inicial
     public Personaje(String nombre, Posicion posicion) {
         this.nombre = nombre;
