@@ -40,4 +40,9 @@ public class Posicion {
     public int hashCode() {
         return 31 * x + y;
     }
+    
+    public int distancia(Posicion otra) {
+    return Math.abs(this.x - otra.x) + Math.abs(this.y - otra.y); // distancia de Manhattan
+    }
+    
 }

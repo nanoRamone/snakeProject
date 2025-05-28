@@ -1,12 +1,12 @@
 package com.mycompany.juego;
 
-// Representa el mapa como una matriz de celdas
+import java.util.Random;
+
 public class Mapa {
     private int filas;
     private int columnas;
     private Celda[][] celdas;
 
-    // Constructor: crea un mapa de tamaño filas x columnas
     public Mapa(int filas, int columnas) {
         this.filas = filas;
         this.columnas = columnas;
@@ -14,7 +14,6 @@ public class Mapa {
         inicializarCeldas();
     }
 
-    // Inicializa cada celda del mapa como vacía
     private void inicializarCeldas() {
         for (int i = 0; i < filas; i++) {
             for (int j = 0; j < columnas; j++) {
@@ -23,7 +22,6 @@ public class Mapa {
         }
     }
 
-    // Devuelve la celda ubicada en (x, y), o null si está fuera del mapa
     public Celda getCelda(int x, int y) {
         if (x >= 0 && x < filas && y >= 0 && y < columnas) {
             return celdas[x][y];
@@ -32,44 +30,108 @@ public class Mapa {
         }
     }
 
-    // Mueve un personaje a una nueva posición si el destino es válido
     public boolean moverPersonaje(Personaje personaje, int dx, int dy) {
         int nuevoX = personaje.getPosicion().getX() + dx;
         int nuevoY = personaje.getPosicion().getY() + dy;
 
-        // Verifica que esté dentro del mapa
-        if (nuevoX >= 0 && nuevoX < filas && nuevoY >= 0 && nuevoY < columnas) {
-            Celda destino = celdas[nuevoX][nuevoY];
-            if (!destino.estaBloqueada() && destino.estaVacia()) {
-                // Se limpia la celda actual
-                Celda actual = celdas[personaje.getPosicion().getX()][personaje.getPosicion().getY()];
-                actual.setContenido(null);
+        if (nuevoX < 0 || nuevoX >= filas || nuevoY < 0 || nuevoY >= columnas) {
+            System.out.println("Movimiento fuera del mapa.");
+            return false;
+        }
 
-                // Se actualiza el contenido y la posición
-                destino.setContenido(personaje);
-                personaje.setPosicion(new Posicion(nuevoX, nuevoY));
-                return true;
+        Celda destino = celdas[nuevoX][nuevoY];
+        Object contenido = destino.getContenido();
+
+        // Si es una puerta
+        if (contenido instanceof Puerta) {
+            Puerta puerta = (Puerta) contenido;
+
+            if (personaje instanceof Snake) {
+                Snake snake = (Snake) personaje;
+
+                if (puerta.estaAbierta()) {
+                    System.out.println("Has ganado! Entraste por la puerta.");
+                    // Opcional: terminar el juego o hacer algo más
+                    return true;
+                } else {
+                    if (snake.tieneLlave()) {
+                        puerta.abrir();
+                        System.out.println("Tienes la llave del hangar!");
+                        return true;
+                    } else {
+                        System.out.println("La puerta esta cerrada. Necesitas la llave.");
+                        return false;
+                    }
+                }
+            } else {
+                System.out.println("Solo Snake puede abrir esta puerta.");
+                return false;
             }
         }
 
-        return false;
+        // Si es un item (la llave)
+        if (contenido instanceof Item) {
+            Item item = (Item) contenido;
+
+            if (personaje instanceof Snake) {
+                Snake snake = (Snake) personaje;
+
+                if (!item.fueRecogido()) {
+                    item.recoger();
+                    snake.obtenerLlave();
+                    destino.setContenido(null); // Sacar la llave del mapa
+                    System.out.println("Has recogido la llave!");
+                }
+            }
+        }
+
+        // Si está vacío o el contenido ya fue procesado
+        if (!destino.estaBloqueada() && destino.estaVacia()) {
+            // Limpia la celda actual
+            Celda actual = celdas[personaje.getPosicion().getX()][personaje.getPosicion().getY()];
+            actual.setContenido(null);
+
+            // Mueve al personaje
+            destino.setContenido(personaje);
+            personaje.setPosicion(new Posicion(nuevoX, nuevoY));
+            return true;
+        } else {
+            System.out.println("No puedes moverte allí, espacio ocupado o bloqueado.");
+            return false;
+        }
     }
 
-    // Imprime el mapa por consola con letras que representan lo que hay en cada celda
     public void imprimirMapa() {
         for (int i = 0; i < filas; i++) {
             for (int j = 0; j < columnas; j++) {
-                if (celdas[i][j].getContenido() instanceof Snake) {
+                Object contenido = celdas[i][j].getContenido();
+
+                if (contenido instanceof Snake) {
                     System.out.print("S ");
-                } else if (celdas[i][j].getContenido() instanceof Guardia) {
+                } else if (contenido instanceof Guardia) {
                     System.out.print("G ");
-                } else if (celdas[i][j].getContenido() instanceof MetalGear) { // ESTO no es necesario
+                } else if (contenido instanceof MetalGear) {
                     System.out.print("M ");
+                } else if (contenido instanceof Item) {
+                    System.out.print("L "); // L de "Llave"
+                } else if (contenido instanceof Puerta) {
+                    System.out.print("H "); // H de "Hangar"
                 } else {
                     System.out.print(". ");
                 }
             }
             System.out.println();
         }
+    }
+
+    public Posicion generarPosicionAleatoria() {
+        Random random = new Random();
+        int x = random.nextInt(filas);
+        int y = random.nextInt(columnas);
+        return new Posicion(x, y);
+    }
+    
+    public boolean esPosicionValida(int x, int y) {
+    return x >= 0 && x < filas && y >= 0 && y < columnas;
     }
 }
