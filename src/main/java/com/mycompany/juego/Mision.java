@@ -32,4 +32,8 @@ public abstract class Mision {
     public List<Guardia> getGuardias() {
         return guardias;
     }
+
+    boolean misionCompleta() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

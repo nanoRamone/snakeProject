@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 public class MisionInicial extends Mision {
 
+    private Puerta puerta;  //GENERA ATRIBUTO PARA PODER FINALIZAR MISION COMPLETA
+
     @Override
     public void configurar() {
         // 1) Mapa 7×7
@@ -17,7 +19,7 @@ public class MisionInicial extends Mision {
         mapa.getCelda(p.getX(), p.getY()).setContenido(snake);
 
         // 3) Puerta fija y llave
-        Puerta puerta = new Puerta("Puerta del Hangar");
+        puerta = new Puerta("Puerta del Hangar");  // 🔧 se asigna al atributo de clase
         mapa.getCelda(0, 3).setContenido(puerta);
 
         Posicion pl;
@@ -40,5 +42,11 @@ public class MisionInicial extends Mision {
             mapa.getCelda(pg.getX(), pg.getY()).setContenido(g);
             guardias.add(g);
         }
+    }
+        //  5)VERIFICA QUE LA MISION ESTE COMPELTA
+    @Override
+    public boolean misionCompleta() { 
+        return puerta.estaDesbloqueada() &&
+               snake.getPosicion().equals(new Posicion(0, 3));
     }
 }

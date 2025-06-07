@@ -14,4 +14,9 @@ public class Puerta extends ObjetoMapa {
     public boolean estaAbierta() {
         return abierta;
     }
+
+    // Se agrega este método solo para compatibilidad con el resto del juego
+    public boolean estaDesbloqueada() {
+        return estaAbierta(); // usa la misma lógica interna
+    }
 }
