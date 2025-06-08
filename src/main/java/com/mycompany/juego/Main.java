@@ -107,14 +107,11 @@ public class Main {
                             // Procesa interacciones antes de mover (ej. recoger llave)
                             mi.procesarInteracciones(celdaDestino);
 
-                            // Mover a Snake si la celda no está bloqueada
-                            boolean moved = mapa.moverPersonaje(snake, dx, dy);
-                        } else {
-                            System.out.println("Movimiento fuera del mapa.");
-                        }
+                            // Mover a Snake
+                            mapa.moverPersonaje(snake, dx, dy);
                     } else {
-                        // Lógica para otras misiones
-                        snake.mover(dx, dy, mapa);
+                        // Lógica para otras misiones que faltan implementar
+                        mapa.moverPersonaje(snake, dx, dy);
                     }
 
                     for (Guardia g : guardias) {
