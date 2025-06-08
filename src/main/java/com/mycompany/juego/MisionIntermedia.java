@@ -3,29 +3,32 @@ package com.mycompany.juego;
 import java.util.ArrayList;
 
 public class MisionIntermedia extends Mision {
+
+    private Puerta puerta;
+
     @Override
     public void configurar() {
-            // 1) Mapa 9×9
+        // Mapa 9x9
         mapa = new Mapa(9, 9);
 
-        // 2) Snake en posición aleatoria libre
+        // Snake en posición aleatoria libre
         Posicion p;
         do { p = mapa.generarPosicionAleatoria(); }
         while (!mapa.getCelda(p.getX(), p.getY()).estaVacia());
         snake = new Snake("Snake", p);
         mapa.getCelda(p.getX(), p.getY()).setContenido(snake);
 
-        // 3) Puerta fija y llave
-        Puerta puerta = new Puerta("Puerta del Hangar");
-        mapa.getCelda(0, 3).setContenido(puerta);
+        // Puerta fija 
+        puerta = new Puerta("Puerta Reforzada");
+        mapa.getCelda(0, 4).setContenido(puerta);
 
-        Posicion pl;
-        do { pl = mapa.generarPosicionAleatoria(); }
-        while (!mapa.getCelda(pl.getX(), pl.getY()).estaVacia());
-        Item llave = new Item("Llave", puerta);
-        mapa.getCelda(pl.getX(), pl.getY()).setContenido(llave);
+        Posicion pc4;
+        do { pc4 = mapa.generarPosicionAleatoria(); }
+        while (!mapa.getCelda(pc4.getX(), pc4.getY()).estaVacia());
+        Item c4 = new Item("C4", puerta);  // 🔧 Item especial para esta misión
+        mapa.getCelda(pc4.getX(), pc4.getY()).setContenido(c4);
 
-        // 4) Guardias a ≥2 de distancia
+        // Guardias colocados a ≥2 de Snake
         guardias = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             Posicion pg;
@@ -39,5 +42,20 @@ public class MisionIntermedia extends Mision {
             mapa.getCelda(pg.getX(), pg.getY()).setContenido(g);
             guardias.add(g);
         }
+    }
+
+    @Override
+    public boolean misionCompleta() {
+        // Condición: puerta destruida, Snake en la celda de la puerta y SIN guardias a 2 celdas
+        if (!puerta.estaDesbloqueada()) return false;
+        if (!snake.getPosicion().equals(new Posicion(0, 4))) return false;
+
+        for (Guardia g : guardias) {
+            if (g.getPosicion().distancia(snake.getPosicion()) <= 2) {
+                return false;  // Hay un guardia demasiado cerca
+            }
+        }
+
+        return true;
     }
 }

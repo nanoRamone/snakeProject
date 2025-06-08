@@ -134,4 +134,8 @@ public class Mapa {
     public boolean esPosicionValida(int x, int y) {
     return x >= 0 && x < filas && y >= 0 && y < columnas;
     }
+
+    Object getObjetos() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

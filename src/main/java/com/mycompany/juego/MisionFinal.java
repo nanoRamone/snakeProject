@@ -4,7 +4,9 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class MisionFinal extends Mision {
-    
+    //GUARDA EL RESULTADO DE VICTORIA
+    private boolean resultadoFinal = false;
+
     public boolean iniciar() {
         System.out.println("FINAL BATLLE");
 
@@ -46,16 +48,24 @@ public class MisionFinal extends Mision {
         }
 
         if (vidaSnake <= 0) {
-            System.out.println("El mundo no necesita soldados como tu");
+            System.out.println("El mundo no necesita soldados como tu. GAME OVER");
+            resultadoFinal = false;
             return false;
         } else {
-            System.out.println("Has vencido a MetalGear");
+            System.out.println("VICTORIA. Has vencido a MetalGear");
+            resultadoFinal = true;
             return true;
         }
     }
 
     @Override
+           //EJECUTA LA BATALLA EN MAIN
     public void configurar() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        iniciar();
+    }
+           // VERIFICA QUE MISION ESTE COMPLETADA
+    @Override
+    public boolean misionCompleta() {
+        return resultadoFinal;
     }
 }
