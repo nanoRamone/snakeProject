@@ -2,17 +2,14 @@ package com.mycompany.juego;
 
 public class Item extends ObjetoMapa {
     private boolean recogido = false;
-    private Puerta puertaAsociada;
 
-    public Item(String nombre, Puerta puertaAsociada) {
+    public Item(String nombre) {
         super(nombre);
-        this.puertaAsociada = puertaAsociada;
     }
 
     public void recoger() {
         if (!recogido) {
             recogido = true;
-            puertaAsociada.abrir();
         }
     }
 

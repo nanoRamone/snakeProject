@@ -79,9 +79,19 @@ public class Main {
                         continue;
                     }
 
-                    // Mover jugador y enemigos
-                    snake.mover(dx, dy, mapa);
-                    for (Guardia g : guardias) g.moverAleatorio(mapa);
+                 
+                   if (m instanceof MisionInicial mi) {
+                // Calcular la posición destino
+                    int nuevoX = snake.getPosicion().getX() + dx;
+                    int nuevoY = snake.getPosicion().getY() + dy;
+                        if (mapa.esPosicionValida(nuevoX, nuevoY)) {
+                            Celda celdaDestino = mapa.getCelda(nuevoX, nuevoY);
+                            mi.procesarInteracciones(celdaDestino); 
+    }
+        }
+                snake.mover(dx, dy, mapa);
+                for (Guardia g : guardias) g.moverAleatorio(mapa);
+
 
                     // Chequear derrota (si un guardia está junto a Snake)
                     boolean perdido = guardias.stream()
@@ -92,7 +102,7 @@ public class Main {
                     }
                 }
 
-                // SE IMPLEMENTA METODO PARA VERIFICAR QUE LA MISION SE CUMPLIO1
+                // SE IMPLEMENTA METODO PARA VERIFICAR QUE LA MISION SE CUMPLIO
                 if (m.misionCompleta()) {
                     System.out.println("¡Has ganado la misión!");
                     misionesCompletadas++;

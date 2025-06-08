@@ -25,7 +25,7 @@ public class MisionIntermedia extends Mision {
         Posicion pc4;
         do { pc4 = mapa.generarPosicionAleatoria(); }
         while (!mapa.getCelda(pc4.getX(), pc4.getY()).estaVacia());
-        Item c4 = new Item("C4", puerta);  // 🔧 Item especial para esta misión
+        Item c4 = new Item("C4");  // 🔧 Item especial para esta misión
         mapa.getCelda(pc4.getX(), pc4.getY()).setContenido(c4);
 
         // Guardias colocados a ≥2 de Snake
@@ -47,7 +47,7 @@ public class MisionIntermedia extends Mision {
     @Override
     public boolean misionCompleta() {
         // Condición: puerta destruida, Snake en la celda de la puerta y SIN guardias a 2 celdas
-        if (!puerta.estaDesbloqueada()) return false;
+        if (!puerta.abierta) return false;
         if (!snake.getPosicion().equals(new Posicion(0, 4))) return false;
 
         for (Guardia g : guardias) {
