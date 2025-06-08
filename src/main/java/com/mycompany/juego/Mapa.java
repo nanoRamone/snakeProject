@@ -6,6 +6,7 @@ public class Mapa {
     private int filas;
     private int columnas;
     private Celda[][] celdas;
+    private Puerta puerta;
 
     public Mapa(int filas, int columnas) {
         this.filas = filas;
@@ -33,6 +34,7 @@ public class Mapa {
 public boolean moverPersonaje(Personaje personaje, int dx, int dy) {
     int nuevoX = personaje.getPosicion().getX() + dx;
     int nuevoY = personaje.getPosicion().getY() + dy;
+    
 
     if (nuevoX < 0 || nuevoX >= filas || nuevoY < 0 || nuevoY >= columnas) {
         System.out.println("Movimiento fuera del mapa.");
@@ -41,14 +43,7 @@ public boolean moverPersonaje(Personaje personaje, int dx, int dy) {
 
     Celda destino = celdas[nuevoX][nuevoY];
 
-    // Si es una puerta
-    if (destino.getContenido() instanceof Puerta){
-        System.out.println("Has encontrado una puerta.");
-    }
-
-
-
-    // Solo permite mover si la celda no está bloqueada y está vacía
+    // Solo permite mover si la celda está vacía
     if (!destino.estaBloqueada()) { //&& destino.estaVacia()1
         // Limpia la celda actual
         Celda actual = celdas[personaje.getPosicion().getX()][personaje.getPosicion().getY()];
@@ -61,9 +56,8 @@ public boolean moverPersonaje(Personaje personaje, int dx, int dy) {
     } else {
         System.out.println("No puedes moverte allí, espacio ocupado o bloqueado.");
         return false;
+        }
     }
-}
-
 
     public void imprimirMapa() {
         for (int i = 0; i < filas; i++) {
@@ -99,7 +93,4 @@ public boolean moverPersonaje(Personaje personaje, int dx, int dy) {
     return x >= 0 && x < filas && y >= 0 && y < columnas;
     }
 
-    Object getObjetos() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
 }

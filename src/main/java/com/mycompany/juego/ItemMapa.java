@@ -1,9 +1,9 @@
 package com.mycompany.juego;
 
-public abstract class ObjetoMapa {
+public abstract class ItemMapa {
     private String nombre;
 
-    public ObjetoMapa(String nombre) {
+    public ItemMapa(String nombre) {
         this.nombre = nombre;
     }
 

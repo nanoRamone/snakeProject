@@ -13,7 +13,9 @@ public class Main {
 
         while (!salir) {
             System.out.println("\n--- MENU ---");
-            System.out.println("1) Iniciar mision");
+            if (misionesCompletadas==0)
+                System.out.println("1) Iniciar mision");
+            else System.out.println("1) Siguiente mision");
             System.out.println("2) Guardar progreso");
             System.out.println("3) Cargar progreso");
             System.out.println("4) Salir");
@@ -37,14 +39,18 @@ public class Main {
     }
 
     private void jugarMisionActual(Scanner scanner) {
-        // Bucle para avanzar automáticamente entre misiones si se completan
-        while (misionesCompletadas < 3) {
+            
             Mision m;
             switch (misionesCompletadas) {
-                case 0 -> m = new MisionInicial();
-                case 1 -> m = new MisionIntermedia();
-                case 2 -> m = new MisionFinal();
-                default -> { return; }
+                case 0 ->
+                    m = new MisionInicial();
+                case 1 ->
+                    m = new MisionIntermedia();
+                case 2 ->
+                    m = new MisionFinal();
+                default -> {
+                    return;
+                }
             }
 
             // Configura el escenario de la misión (mapa, Snake, enemigos, ítems, etc.)
@@ -70,32 +76,54 @@ public class Main {
                 // VERIFICAR MOVIMIENTOS DE PERSONAJES, EN LA MISION FINAL NO LO REQUIERE
                 if (mapa != null && snake != null && guardias != null) {
                     int dx = 0, dy = 0;
-                    if      ("W".equals(in)) dx = -1;
-                    else if ("S".equals(in)) dx = 1;
-                    else if ("A".equals(in)) dy = -1;
-                    else if ("D".equals(in)) dy = 1;
-                    else {
+                    if ("W".equals(in)) {
+                        dx = -1; 
+                    }else if ("S".equals(in)) {
+                        dx = 1; 
+                    }else if ("A".equals(in)) {
+                        dy = -1; 
+                    }else if ("D".equals(in)) {
+                        dy = 1; 
+                    }else {
                         System.out.println("Invalido.");
                         continue;
                     }
 
-                 
-                   if (m instanceof MisionInicial mi) {
-                // Calcular la posición destino
-                    int nuevoX = snake.getPosicion().getX() + dx;
-                    int nuevoY = snake.getPosicion().getY() + dy;
+                    if (m instanceof MisionInicial mi) {
+                        int nuevoX = snake.getPosicion().getX() + dx;
+                        int nuevoY = snake.getPosicion().getY() + dy;
+
                         if (mapa.esPosicionValida(nuevoX, nuevoY)) {
                             Celda celdaDestino = mapa.getCelda(nuevoX, nuevoY);
-                            mi.procesarInteracciones(celdaDestino); 
-    }
-        }
-                snake.mover(dx, dy, mapa);
-                for (Guardia g : guardias) g.moverAleatorio(mapa);
 
+                            // Verifica puerta bloqueada antes de mover
+                            if (celdaDestino.getContenido() instanceof Puerta) {
+                                if (!snake.tieneLlave()) {
+                                    System.out.println("La puerta está bloqueada. Necesitas una llave.");
+                                    continue; // No se mueve ni procesa nada
+                                } 
+                            }
+
+                            // Procesa interacciones antes de mover (ej. recoger llave)
+                            mi.procesarInteracciones(celdaDestino);
+
+                            // Mover a Snake si la celda no está bloqueada
+                            boolean moved = mapa.moverPersonaje(snake, dx, dy);
+                        } else {
+                            System.out.println("Movimiento fuera del mapa.");
+                        }
+                    } else {
+                        // Lógica para otras misiones
+                        snake.mover(dx, dy, mapa);
+                    }
+
+                    for (Guardia g : guardias) {
+                        g.moverAleatorio(mapa);
+                    }
 
                     // Chequear derrota (si un guardia está junto a Snake)
                     boolean perdido = guardias.stream()
-                        .anyMatch(g -> snake.getPosicion().distancia(g.getPosicion()) == 1);
+                            .anyMatch(g -> snake.getPosicion().distancia(g.getPosicion()) == 1);
                     if (perdido) {
                         System.out.println("Has sido descubierto. GAME OVER");
                         return;
@@ -104,16 +132,15 @@ public class Main {
 
                 // SE IMPLEMENTA METODO PARA VERIFICAR QUE LA MISION SE CUMPLIO
                 if (m.misionCompleta()) {
-                    System.out.println("¡Has ganado la misión!");
+                    System.out.println("¡Has ganado la primer misión!");
                     misionesCompletadas++;
                     break; // pasa a la siguiente misión automáticamente
-                    
+
                 }
             }
         }
 
-        System.out.println("¡FELICITACIONES! Has completado todas las misiones.");
-    }
+    
 
     private void guardarProgreso() {
         String codigo = "PBA25-" + misionesCompletadas;

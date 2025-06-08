@@ -14,23 +14,14 @@ public class Snake extends Personaje {
         return tieneLlave;
     }
 
-    // Marca que Snake ha obtenido la llave
-    public void obtenerLlave() {
+    // Marca que Snake ha obten1ido la llave
+    public void recogerLlave() {
         tieneLlave = true;
     }
 
     // Movimiento básico: delega en el mapa si puede moverse
     @Override
     public void mover(int dx, int dy, Mapa mapa) {
-    boolean pudoMover = mapa.moverPersonaje(this, dx, dy);
-    if (pudoMover) {
-        System.out.println(nombre + " se movió a (" + posicion.getX() + ", " + posicion.getY() + ")");
-    } else {
-        System.out.println("Movimiento inválido para " + nombre);
-    }
-}
-
-    boolean tieneItem(Item c4) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        mapa.moverPersonaje(this, dx, dy);
     }
 }

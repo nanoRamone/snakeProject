@@ -1,6 +1,6 @@
 package com.mycompany.juego;
 
-public class Item extends ObjetoMapa {
+public class Item extends ItemMapa {
     private boolean recogido = false;
 
     public Item(String nombre) {
