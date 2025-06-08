@@ -6,6 +6,7 @@ public class Mapa {
     private int filas;
     private int columnas;
     private Celda[][] celdas;
+    private Puerta puerta;
 
     public Mapa(int filas, int columnas) {
         this.filas = filas;
@@ -30,74 +31,31 @@ public class Mapa {
         }
     }
 
-    public boolean moverPersonaje(Personaje personaje, int dx, int dy) {
-        int nuevoX = personaje.getPosicion().getX() + dx;
-        int nuevoY = personaje.getPosicion().getY() + dy;
+public boolean moverPersonaje(Personaje personaje, int dx, int dy) {
+    int nuevoX = personaje.getPosicion().getX() + dx;
+    int nuevoY = personaje.getPosicion().getY() + dy;
+    
 
-        if (nuevoX < 0 || nuevoX >= filas || nuevoY < 0 || nuevoY >= columnas) {
-            System.out.println("Movimiento fuera del mapa.");
-            return false;
-        }
+    if (nuevoX < 0 || nuevoX >= filas || nuevoY < 0 || nuevoY >= columnas) {
+        System.out.println("Movimiento fuera del mapa.");
+        return false;
+    }
 
-        Celda destino = celdas[nuevoX][nuevoY];
-        Object contenido = destino.getContenido();
+    Celda destino = celdas[nuevoX][nuevoY];
 
-        // Si es una puerta
-        if (contenido instanceof Puerta) {
-            Puerta puerta = (Puerta) contenido;
+    // Solo permite mover si la celda está vacía
+    if (!destino.estaBloqueada()) { //&& destino.estaVacia()1
+        // Limpia la celda actual
+        Celda actual = celdas[personaje.getPosicion().getX()][personaje.getPosicion().getY()];
+        actual.setContenido(null);
 
-            if (personaje instanceof Snake) {
-                Snake snake = (Snake) personaje;
-
-                if (puerta.estaAbierta()) {
-                    System.out.println("Has ganado! Entraste por la puerta.");
-                    // Opcional: terminar el juego o hacer algo más
-                    return true;
-                } else {
-                    if (snake.tieneLlave()) {
-                        puerta.abrir();
-                        System.out.println("Tienes la llave del hangar!");
-                        return true;
-                    } else {
-                        System.out.println("La puerta esta cerrada. Necesitas la llave.");
-                        return false;
-                    }
-                }
-            } else {
-                System.out.println("Solo Snake puede abrir esta puerta.");
-                return false;
-            }
-        }
-
-        // Si es un item (la llave)
-        if (contenido instanceof Item) {
-            Item item = (Item) contenido;
-
-            if (personaje instanceof Snake) {
-                Snake snake = (Snake) personaje;
-
-                if (!item.fueRecogido()) {
-                    item.recoger();
-                    snake.obtenerLlave();
-                    destino.setContenido(null); // Sacar la llave del mapa
-                    System.out.println("Has recogido la llave!");
-                }
-            }
-        }
-
-        // Si está vacío o el contenido ya fue procesado
-        if (!destino.estaBloqueada() && destino.estaVacia()) {
-            // Limpia la celda actual
-            Celda actual = celdas[personaje.getPosicion().getX()][personaje.getPosicion().getY()];
-            actual.setContenido(null);
-
-            // Mueve al personaje
-            destino.setContenido(personaje);
-            personaje.setPosicion(new Posicion(nuevoX, nuevoY));
-            return true;
-        } else {
-            System.out.println("No puedes moverte allí, espacio ocupado o bloqueado.");
-            return false;
+        // Mueve al personaje
+        destino.setContenido(personaje);
+        personaje.setPosicion(new Posicion(nuevoX, nuevoY));
+        return true;
+    } else {
+        System.out.println("No puedes moverte allí, espacio ocupado o bloqueado.");
+        return false;
         }
     }
 
@@ -135,7 +93,4 @@ public class Mapa {
     return x >= 0 && x < filas && y >= 0 && y < columnas;
     }
 
-    Object getObjetos() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
 }

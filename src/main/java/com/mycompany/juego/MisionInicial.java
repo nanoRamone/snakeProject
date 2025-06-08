@@ -13,10 +13,11 @@ public class MisionInicial extends Mision {
 
         // 2) Snake en posición aleatoria libre
         Posicion p;
+        
         do { p = mapa.generarPosicionAleatoria(); }
         while (!mapa.getCelda(p.getX(), p.getY()).estaVacia());
-        snake = new Snake("Snake", p);
-        mapa.getCelda(p.getX(), p.getY()).setContenido(snake);
+            snake = new Snake("Snake", p);
+            mapa.getCelda(p.getX(), p.getY()).setContenido(snake);
 
         // 3) Puerta fija y llave
         puerta = new Puerta("Puerta del Hangar");  // 🔧 se asigna al atributo de clase
@@ -25,12 +26,13 @@ public class MisionInicial extends Mision {
         Posicion pl;
         do { pl = mapa.generarPosicionAleatoria(); }
         while (!mapa.getCelda(pl.getX(), pl.getY()).estaVacia());
-        Item llave = new Item("Llave", puerta);
+        
+        Item llave = new Item("Llave");
         mapa.getCelda(pl.getX(), pl.getY()).setContenido(llave);
 
         // 4) Guardias a ≥2 de distancia
         guardias = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 2; i++) {
             Posicion pg;
             do {
                 pg = mapa.generarPosicionAleatoria();
@@ -43,10 +45,39 @@ public class MisionInicial extends Mision {
             guardias.add(g);
         }
     }
-        //  5)VERIFICA QUE LA MISION ESTE COMPELTA
+        //  5)VERIFICA QUE LA MISION ESTE COMPLETA
     @Override
     public boolean misionCompleta() { 
-        return puerta.estaDesbloqueada() &&
+        return puerta.abierta &&
                snake.getPosicion().equals(new Posicion(0, 3));
     }
+
+
+public boolean procesarInteracciones(Celda celdaDestino) {
+    // Si hay una llave, la recoge y desbloquea la puerta
+    if (celdaDestino.getContenido() instanceof Item llave) {
+        if (llave.getNombre().equals("Llave")) {
+            snake.recogerLlave();
+            puerta.abierta = true; // Desbloquea la puerta correctamente
+            System.out.println("¡Has recogido la llave! Podras atravesar la puerta.");
+            celdaDestino.setContenido(null); // Elimina la llave de la celda
+        }
+    }
+
+    // Si hay una puerta, verifica si está desbloqueada
+    if (celdaDestino.getContenido() instanceof Puerta) {
+        if (puerta.abierta) {
+            return true; // Indica que la misión debe terminar
+        } else {
+            System.out.println("La puerta está bloqueada. Necesitas una llave.");
+            return false;
+        }
+    }
+    return false; // No terminó la misión
 }
+
+    
+
+}
+
+
