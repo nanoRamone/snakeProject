@@ -61,7 +61,7 @@ public class MisionInicial extends Mision {
             if (puerta.abierta) {
                 return true;
             } else {
-                System.out.println("La puerta está bloqueada. NecesitaSs una llave.");
+                System.out.println("La puerta está bloqueada. Necesitas una llave.");
             }
         }
 
