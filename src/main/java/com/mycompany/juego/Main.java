@@ -121,7 +121,7 @@ public class Main {
 
                         boolean finaliza = mi.procesarInteracciones(celdaDestino);
 
-                        if (celdaDestino.estaVacia() || celdaDestino.getContenido() instanceof Puerta || celdaDestino.getContenido() instanceof Item) {
+                        if (celdaDestino.estaVacia() || (celdaDestino.getContenido() instanceof Puerta && snake.tieneC4())|| celdaDestino.getContenido() instanceof Item) {
                             mapa.moverPersonaje(snake, dx, dy);
                         }
 
