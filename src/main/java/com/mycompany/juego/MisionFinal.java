@@ -22,14 +22,14 @@ public class MisionFinal extends Mision {
             System.out.println("2 - Esquivar");
             String opcion = scanner.nextLine();
 
-            if (opcion.equals("1")) {
-                int danio = rand.nextInt(21) + 10; // 10 a 30
-                vidaRex -= danio;
-                System.out.println("¡Le diste a REX! (-" + danio + " HP)");
-            } else if (opcion.equals("2")) {
-                System.out.println("¡Esquiva!");
-            } else {
-                System.out.println("Opción inválida. Pierdes el turno.");
+            switch (opcion) {
+                case "1" -> {
+                    int danio = rand.nextInt(21) + 10; // 10 a 30
+                    vidaRex -= danio;
+                    System.out.println("Le diste a REX! (-" + danio + " HP)");
+                }
+                case "2" -> System.out.println("Esquiva");
+                default -> System.out.println("Opcion invalida. Pierdes el turno.");
             }
 
             if (vidaRex <= 0) break;
@@ -43,7 +43,7 @@ public class MisionFinal extends Mision {
                 System.out.println("Snake, el asesino que se divierte" + danioReducido + " HP.");
             } else {
                 vidaSnake -= ataqueRex;
-                System.out.println("¡El sacrificio de Meryl sera tu perdicion! (-" + ataqueRex + " HP)");
+                System.out.println("El sacrificio de Meryl sera tu perdicion (-" + ataqueRex + " HP)");
             }
         }
 

@@ -3,9 +3,9 @@ package com.mycompany.juego;
 import java.util.Random;
 
 public class Mapa {
-    private int filas;
-    private int columnas;
-    private Celda[][] celdas;
+    private final int filas;
+    private final int columnas;
+    private final Celda[][] celdas;
 
     public Mapa(int filas, int columnas) {
         this.filas = filas;
@@ -30,40 +30,32 @@ public class Mapa {
         }
     }
 
-public boolean moverPersonaje(Personaje personaje, int dx, int dy) {
-    int nuevoX = personaje.getPosicion().getX() + dx;
-    int nuevoY = personaje.getPosicion().getY() + dy;
+    public boolean moverPersonaje(Personaje personaje, int dx, int dy) {
+        int nuevoX = personaje.getPosicion().getX() + dx;
+        int nuevoY = personaje.getPosicion().getY() + dy;
 
-    if (nuevoX < 0 || nuevoX >= filas || nuevoY < 0 || nuevoY >= columnas) {
-        System.out.println("Movimiento fuera del mapa.");
-        return false;
+        if (nuevoX < 0 || nuevoX >= filas || nuevoY < 0 || nuevoY >= columnas) {
+            System.out.println("Movimiento fuera del mapa.");
+            return false;
+        }
+
+        Celda destino = celdas[nuevoX][nuevoY];
+
+        // Solo permite mover si la celda está vacía
+        if (!destino.estaBloqueada()) { //&& destino.estaVacia()
+            // Limpia la celda actual
+            Celda actual = celdas[personaje.getPosicion().getX()][personaje.getPosicion().getY()];
+            actual.setContenido(null);
+
+            // Mueve al personaje
+            destino.setContenido(personaje);
+            personaje.setPosicion(new Posicion(nuevoX, nuevoY));
+            return true;
+        } else {
+            System.out.println("No puedes moverte allí, espacio ocupado o bloqueado.");
+            return false;
+        }
     }
-
-    Celda destino = celdas[nuevoX][nuevoY];
-
-    // Si es una puerta
-    if (destino.getContenido() instanceof Puerta){
-        System.out.println("Has encontrado una puerta.");
-    }
-
-
-
-    // Solo permite mover si la celda no está bloqueada y está vacía
-    if (!destino.estaBloqueada()) { //&& destino.estaVacia()1
-        // Limpia la celda actual
-        Celda actual = celdas[personaje.getPosicion().getX()][personaje.getPosicion().getY()];
-        actual.setContenido(null);
-
-        // Mueve al personaje
-        destino.setContenido(personaje);
-        personaje.setPosicion(new Posicion(nuevoX, nuevoY));
-        return true;
-    } else {
-        System.out.println("No puedes moverte allí, espacio ocupado o bloqueado.");
-        return false;
-    }
-}
-
 
     public void imprimirMapa() {
         for (int i = 0; i < filas; i++) {
@@ -76,10 +68,10 @@ public boolean moverPersonaje(Personaje personaje, int dx, int dy) {
                     System.out.print("G ");
                 } else if (contenido instanceof MetalGear) {
                     System.out.print("M ");
-                } else if (contenido instanceof Item) {
-                    System.out.print("L "); // L de "Llave"
-                } else if (contenido instanceof Puerta) {
-                    System.out.print("H "); // H de "Hangar"
+                } 
+                // para usar simbolo que definimos en ObjetoMapa
+                else if (contenido instanceof ObjetoMapa) {
+                    System.out.print(((ObjetoMapa) contenido).getSimbolo() + " ");
                 } else {
                     System.out.print(". ");
                 }
@@ -94,12 +86,8 @@ public boolean moverPersonaje(Personaje personaje, int dx, int dy) {
         int y = random.nextInt(columnas);
         return new Posicion(x, y);
     }
-    
-    public boolean esPosicionValida(int x, int y) {
-    return x >= 0 && x < filas && y >= 0 && y < columnas;
-    }
 
-    Object getObjetos() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public boolean esPosicionValida(int x, int y) {
+        return x >= 0 && x < filas && y >= 0 && y < columnas;
     }
 }

@@ -9,8 +9,7 @@ public class Guardia extends Personaje {
     }
 
     @Override
-    public void mover(int dx, int dy, Mapa mapa) {
-        // Este método queda sin uso porque el movimiento lo hace moverAleatorio()
+    public void mover(int dx, int dy, Mapa mapa) {// Este método queda sin uso porque el movimiento lo hace moverAleatorio()
     }
 
     public void moverAleatorio(Mapa mapa) {

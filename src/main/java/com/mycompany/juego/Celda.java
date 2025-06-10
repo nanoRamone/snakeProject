@@ -1,7 +1,5 @@
 package com.mycompany.juego;
 
-
-
 // Representa una casilla del mapa. Puede estar bloqueada y contener algo (personaje, item, etc.)
 public class Celda {
     private boolean bloqueada;

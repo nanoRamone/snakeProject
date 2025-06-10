@@ -14,6 +14,7 @@ public abstract class Mision {
 
     /**  
      * Devuelve el mapa ya configurado.  
+     * @return 
      */
     public Mapa getMapa() {
         return mapa;
@@ -21,6 +22,7 @@ public abstract class Mision {
 
     /**  
      * Devuelve la instancia de Snake en este escenario.  
+     * @return 
      */
     public Snake getSnake() {
         return snake;
@@ -28,6 +30,7 @@ public abstract class Mision {
 
     /**  
      * Devuelve la lista de guardias en este escenario.  
+     * @return 
      */
     public List<Guardia> getGuardias() {
         return guardias;
