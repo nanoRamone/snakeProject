@@ -1,12 +1,8 @@
 package com.mycompany.juego;
 
-<<<<<<< HEAD
 public class Puerta extends ObjetoMapa {
 
     private String nombre;
-=======
-public class Puerta extends ItemMapa {
->>>>>>> a8fe8a7daac166e1f18029976a0066ae33fbecc2
     public boolean abierta = false;
 
     // CONSTRUCTOR ORIGINAL (SE MANTIENE)
