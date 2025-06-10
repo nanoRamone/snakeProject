@@ -29,7 +29,7 @@ public class MisionFinal extends Mision {
                     System.out.println("Le diste a REX! (-" + danio + " HP)");
                 }
                 case "2" -> System.out.println("Esquiva");
-                default -> System.out.println("Opcion invalida. Pierdes el turno.");
+                default -> System.out.println("Opcion inválida. Pierdes el turno.");
             }
 
             if (vidaRex <= 0) break;
@@ -43,7 +43,7 @@ public class MisionFinal extends Mision {
                 System.out.println("Snake, el asesino que se divierte" + danioReducido + " HP.");
             } else {
                 vidaSnake -= ataqueRex;
-                System.out.println("El sacrificio de Meryl sera tu perdicion (-" + ataqueRex + " HP)");
+                System.out.println("El sacrificio de Meryl sera tu perdicionS (-" + ataqueRex + " HP)");
             }
         }
 

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 C:\Users\Facundo Garay\Documents\GitHub\snakeProject\src\main\java\com\mycompany\juego\Celda.java
 C:\Users\Facundo Garay\Documents\GitHub\snakeProject\src\main\java\com\mycompany\juego\Guardia.java
 C:\Users\Facundo Garay\Documents\GitHub\snakeProject\src\main\java\com\mycompany\juego\Item.java
@@ -15,20 +14,3 @@ C:\Users\Facundo Garay\Documents\GitHub\snakeProject\src\main\java\com\mycompany
 C:\Users\Facundo Garay\Documents\GitHub\snakeProject\src\main\java\com\mycompany\juego\Posicion.java
 C:\Users\Facundo Garay\Documents\GitHub\snakeProject\src\main\java\com\mycompany\juego\Puerta.java
 C:\Users\Facundo Garay\Documents\GitHub\snakeProject\src\main\java\com\mycompany\juego\Snake.java
-=======
-C:\Users\forti\Documents\GitHub\snakeProject\src\main\java\com\mycompany\juego\Celda.java
-C:\Users\forti\Documents\GitHub\snakeProject\src\main\java\com\mycompany\juego\Guardia.java
-C:\Users\forti\Documents\GitHub\snakeProject\src\main\java\com\mycompany\juego\Item.java
-C:\Users\forti\Documents\GitHub\snakeProject\src\main\java\com\mycompany\juego\ItemMapa.java
-C:\Users\forti\Documents\GitHub\snakeProject\src\main\java\com\mycompany\juego\Main.java
-C:\Users\forti\Documents\GitHub\snakeProject\src\main\java\com\mycompany\juego\Mapa.java
-C:\Users\forti\Documents\GitHub\snakeProject\src\main\java\com\mycompany\juego\MetalGear.java
-C:\Users\forti\Documents\GitHub\snakeProject\src\main\java\com\mycompany\juego\Mision.java
-C:\Users\forti\Documents\GitHub\snakeProject\src\main\java\com\mycompany\juego\MisionFinal.java
-C:\Users\forti\Documents\GitHub\snakeProject\src\main\java\com\mycompany\juego\MisionInicial.java
-C:\Users\forti\Documents\GitHub\snakeProject\src\main\java\com\mycompany\juego\MisionIntermedia.java
-C:\Users\forti\Documents\GitHub\snakeProject\src\main\java\com\mycompany\juego\Personaje.java
-C:\Users\forti\Documents\GitHub\snakeProject\src\main\java\com\mycompany\juego\Posicion.java
-C:\Users\forti\Documents\GitHub\snakeProject\src\main\java\com\mycompany\juego\Puerta.java
-C:\Users\forti\Documents\GitHub\snakeProject\src\main\java\com\mycompany\juego\Snake.java
->>>>>>> a8fe8a7daac166e1f18029976a0066ae33fbecc2
