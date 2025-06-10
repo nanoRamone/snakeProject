@@ -5,10 +5,10 @@ import java.util.ArrayList;
 public class MisionIntermedia extends Mision {
 
     private Puerta puerta;
+    private boolean tieneC4 = false;
 
     @Override
     public void configurar() {
-        // Mapa 9x9
         mapa = new Mapa(9, 9);
 
         // Snake en posición aleatoria libre
@@ -18,14 +18,15 @@ public class MisionIntermedia extends Mision {
         snake = new Snake("Snake", p);
         mapa.getCelda(p.getX(), p.getY()).setContenido(snake);
 
-        // Puerta fija 
-        puerta = new Puerta("Puerta Reforzada");
+        // Colocar el simbolo P en mapa
+        puerta = new Puerta("Puerta Reforzada", 'P');
         mapa.getCelda(0, 4).setContenido(puerta);
 
+        // Colocar C4 en mapa
         Posicion pc4;
         do { pc4 = mapa.generarPosicionAleatoria(); }
         while (!mapa.getCelda(pc4.getX(), pc4.getY()).estaVacia());
-        Item c4 = new Item("C4");  // 🔧 Item especial para esta misión
+        Item c4 = new Item("C4", 'C'); 
         mapa.getCelda(pc4.getX(), pc4.getY()).setContenido(c4);
 
         // Guardias colocados a ≥2 de Snake
@@ -34,10 +35,8 @@ public class MisionIntermedia extends Mision {
             Posicion pg;
             do {
                 pg = mapa.generarPosicionAleatoria();
-            } while (
-                !mapa.getCelda(pg.getX(), pg.getY()).estaVacia() ||
-                pg.distancia(p) < 2
-            );
+            } while (!mapa.getCelda(pg.getX(), pg.getY()).estaVacia() ||
+                     pg.distancia(p) < 2);
             Guardia g = new Guardia("Guardia" + (i+1), pg);
             mapa.getCelda(pg.getX(), pg.getY()).setContenido(g);
             guardias.add(g);
@@ -46,16 +45,42 @@ public class MisionIntermedia extends Mision {
 
     @Override
     public boolean misionCompleta() {
-        // Condición: puerta destruida, Snake en la celda de la puerta y SIN guardias a 2 celdas
         if (!puerta.abierta) return false;
         if (!snake.getPosicion().equals(new Posicion(0, 4))) return false;
 
         for (Guardia g : guardias) {
             if (g.getPosicion().distancia(snake.getPosicion()) <= 2) {
-                return false;  // Hay un guardia demasiado cerca
+                return false;
             }
         }
 
         return true;
+    }
+
+    public boolean procesarInteracciones(Celda celdaDestino) {
+        if (celdaDestino.getContenido() instanceof Item item &&
+            item.getNombre().equals("C4")) {
+            tieneC4 = true;
+            System.out.println("Snake recogio el C4");
+            celdaDestino.setContenido(null);
+        }
+
+        if (celdaDestino.getContenido() instanceof Puerta) {
+            if (!tieneC4) {
+                System.out.println("Necesitas el C4 para detonar la puerta");
+            } else {
+                for (Guardia g : guardias) {
+                    if (g.getPosicion().distancia(snake.getPosicion()) < 3) {
+                        System.out.println("No podes detonar con enemigos cerca. Alejalos primero.");
+                        return false;
+                    }
+                }
+                puerta.abrir();
+                System.out.println("Snake detonó la puerta con el C4");
+                return true;
+            }
+        }
+
+        return false;
     }
 }
