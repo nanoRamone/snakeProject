@@ -12,22 +12,30 @@ public class Main {
             boolean salir = false;
 
             while (!salir) {
-                System.out.println("\n--- MENU ---");
+                System.out.println("\n-S-N-A-K-E--P-R-O-J-E-C-T-");
+                System.out.println("  -M-E-T-A-L--G-E-A-R-");    
+                System.out.println("\n--Developed by: AP-FG-MM--");
+                System.out.println("--Version 1.0 12/6/2025--");
+                System.out.println("\n---------- MENU ----------");
+                    System.out.println("________________________");
+                    System.out.println("|                       |");
                 if (misionesCompletadas == 0)
-                    System.out.println("1) Iniciar mision");
+                    System.out.println("|  1) Iniciar mision    |");
                 else
-                    System.out.println("1) Siguiente mision");
-                System.out.println("2) Guardar progreso");
-                System.out.println("3) Cargar progreso");
-                System.out.println("4) Salir");
-                System.out.print("Opcion: ");
+                    System.out.println("|  1) Siguiente mision  |");
+                    System.out.println("|  2) Guardar progreso  |");
+                    System.out.println("|  3) Cargar progreso   |");
+                    System.out.println("|  4) Salir             |");
+                    System.out.println("|_______________________|");
+                System.out.print("\nSeleccione una opcion: ");
+                System.out.print("\n ");
                 String op = scanner.nextLine();
-
+                
                 switch (op) {
                     case "1" -> jugarMisionActual(scanner);
                     case "2" -> guardarProgreso();
                     case "3" -> {
-                        System.out.print("Codigo: ");
+                        System.out.print("Ingrese el codigo: ");
                         cargarProgreso(scanner.nextLine());
                     }
                     case "4" -> salir = true;
@@ -121,29 +129,27 @@ public class Main {
 
                         boolean finaliza = mi.procesarInteracciones(celdaDestino);
 
-                        if (celdaDestino.estaVacia() || (celdaDestino.getContenido() instanceof Puerta && snake.tieneC4())|| celdaDestino.getContenido() instanceof Item) {
-                            mapa.moverPersonaje(snake, dx, dy);
-                        }
+                        if (!mi.misionFallida()) {
+                            if (celdaDestino.estaVacia() || (celdaDestino.getContenido() instanceof Puerta && snake.tieneC4())|| celdaDestino.getContenido() instanceof Item) {
+                                mapa.moverPersonaje(snake, dx, dy);
+                            }
 
-                        for (Guardia g : guardias) g.moverAleatorio(mapa);
+                            for (Guardia g : guardias) g.moverAleatorio(mapa);
 
-                        boolean perdido = guardias.stream()
-                                .anyMatch(g -> snake.getPosicion().distancia(g.getPosicion()) == 1);
-                        if (perdido) {
-                            System.out.println("Has sido descubierto. GAME OVER");
-                            return;
-                        }
+                            boolean guardiacerca = guardias.stream().anyMatch(g -> snake.getPosicion().distancia(g.getPosicion()) == 1);
 
-                        if (finaliza || mi.misionCompleta()) {
-                            System.out.println("Has ganado la segunda mision");
-                            misionesCompletadas++;
-                            break;
-                        }
+                            if (finaliza && mi.misionCompleta()) {
+                                System.out.println("Has ganado la segunda mision");
+                                misionesCompletadas++;
+                                break;
+                            } else if (guardiacerca) {
+                                System.out.println("Has sido descubierto. GAME OVER");
+                                return;
+                            }
+                        } else return;
                     }
                 }
-
                 else {
-               
                     return;
                 }
             }

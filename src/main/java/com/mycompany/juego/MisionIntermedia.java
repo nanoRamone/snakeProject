@@ -5,6 +5,8 @@ import java.util.ArrayList;
 public class MisionIntermedia extends Mision {
 
     private Puerta puerta;
+    private boolean misionCompleta;
+    private boolean misionFallida;
 
     @Override
     public void configurar() {
@@ -44,17 +46,13 @@ public class MisionIntermedia extends Mision {
 
     @Override
     public boolean misionCompleta() {
-        if (!puerta.abierta) return false;
-        if (!snake.getPosicion().equals(new Posicion(0, 4))) return false;
 
-        for (Guardia g : guardias) {
-            if (g.getPosicion().distancia(snake.getPosicion()) <= 2) {
-                return false;
-            }
-        }
-
-        return true;
+        return this.misionCompleta;
     }
+
+    public boolean misionFallida() {
+        return this.misionFallida;
+    }   
 
     public boolean procesarInteracciones(Celda celdaDestino) {
         if (celdaDestino.getContenido() instanceof Item item &&
@@ -63,6 +61,7 @@ public class MisionIntermedia extends Mision {
             puerta.abrir();
             System.out.println("Snake recogio el C4 y ahora puede detonar la puerta");
             celdaDestino.setContenido(null);
+            return true; // Indica que se recogió el C4
         }
 
         if (celdaDestino.getContenido() instanceof Puerta) {
@@ -70,18 +69,19 @@ public class MisionIntermedia extends Mision {
                 System.out.println("Necesitas el C4 para detonar la puerta");
                 return false;
             } else {
+                //Verificar si algún guardia está cerca
                 for (Guardia g : guardias) {
                     if (g.getPosicion().distancia(snake.getPosicion()) < 3) {
-                        System.out.println("No podes detonar con enemigos cerca. Alejalos primero.");
-                        return false;
+                        System.out.println("Los guardias te han descubierto. Has perdido.");
+                        this.misionFallida = true; // Si hay un guardia cerca, la misión falla
+                        return false; 
                     }
                 }
-                puerta.abrir();
-                System.out.println("Snake detonó la puerta con el C4");
-                return true;
+                this.misionCompleta = true; // Si no hay guardias cerca, se puede detonar la puerta
+                return true; 
             }
         }
-
+        //Si no salgo por la positiva en ninguna condicion, retorno false
         return false;
     }
 }
