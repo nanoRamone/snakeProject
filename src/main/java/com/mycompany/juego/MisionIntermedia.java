@@ -5,7 +5,6 @@ import java.util.ArrayList;
 public class MisionIntermedia extends Mision {
 
     private Puerta puerta;
-    private boolean tieneC4 = false;
 
     @Override
     public void configurar() {
@@ -60,14 +59,16 @@ public class MisionIntermedia extends Mision {
     public boolean procesarInteracciones(Celda celdaDestino) {
         if (celdaDestino.getContenido() instanceof Item item &&
             item.getNombre().equals("C4")) {
-            tieneC4 = true;
-            System.out.println("Snake recogio el C4");
+            snake.recogerC4();
+            puerta.abrir();
+            System.out.println("Snake recogio el C4 y ahora puede detonar la puerta");
             celdaDestino.setContenido(null);
         }
 
         if (celdaDestino.getContenido() instanceof Puerta) {
-            if (!tieneC4) {
+            if (!snake.tieneC4()) {
                 System.out.println("Necesitas el C4 para detonar la puerta");
+                return false;
             } else {
                 for (Guardia g : guardias) {
                     if (g.getPosicion().distancia(snake.getPosicion()) < 3) {

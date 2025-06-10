@@ -40,10 +40,10 @@ public class MisionFinal extends Mision {
                 int reduccion = rand.nextInt(51) + 50; // 50% a 100%
                 int danioReducido = ataqueRex * (100 - reduccion) / 100;
                 vidaSnake -= danioReducido;
-                System.out.println("Snake, el asesino que se divierte" + danioReducido + " HP.");
+                System.out.println("Snake, el asesino que se divierte: " + danioReducido + " HP.");
             } else {
                 vidaSnake -= ataqueRex;
-                System.out.println("El sacrificio de Meryl sera tu perdicionS (-" + ataqueRex + " HP)");
+                System.out.println("El sacrificio de Meryl sera tu perdicion (-" + ataqueRex + " HP)");
             }
         }
 
@@ -52,7 +52,7 @@ public class MisionFinal extends Mision {
             resultadoFinal = false;
             return false;
         } else {
-            System.out.println("VICTORIA. Has vencido a MetalGear");
+            System.out.println("VICTORIA. Felicitaciones, has derrotado a MetalGear");
             resultadoFinal = true;
             return true;
         }

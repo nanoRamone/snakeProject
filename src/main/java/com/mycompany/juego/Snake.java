@@ -4,6 +4,7 @@ package com.mycompany.juego;
 public class Snake extends Personaje {
 
     private boolean tieneLlave = false;  // indica si Snake tiene la llave
+    private boolean tieneC4 = false; // indica si Snake tiene el C4
 
     public Snake(String nombre, Posicion posicion) {
         super(nombre, posicion);
@@ -17,6 +18,14 @@ public class Snake extends Personaje {
     // Marca que Snake ha obten1ido la llave
     public void recogerLlave() {
         tieneLlave = true;
+    }
+
+    public boolean tieneC4() {
+        return tieneC4;
+    }   
+
+    public void recogerC4() {
+        tieneC4 = true;
     }
 
     // Movimiento básico: delega en el mapa si puede moverse
