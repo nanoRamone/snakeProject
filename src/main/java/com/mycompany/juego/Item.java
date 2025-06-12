@@ -1,22 +1,26 @@
 package com.mycompany.juego;
 
 public class Item extends ObjetoMapa {
-    private boolean recogido = false;
-    private Puerta puertaAsociada;
 
-    public Item(String nombre, Puerta puertaAsociada) {
-        super(nombre);
-        this.puertaAsociada = puertaAsociada;
+    private String nombre;
+
+    // 
+    public Item(String nombre) {
+        super(nombre, 'L'); // 
+        this.nombre = nombre;
     }
 
-    public void recoger() {
-        if (!recogido) {
-            recogido = true;
-            puertaAsociada.abrir();
-        }
+    // 
+    public Item(String nombre, char simbolo) {
+        super(nombre, simbolo); // 
+        this.nombre = nombre;
     }
 
-    public boolean fueRecogido() {
-        return recogido;
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void alColisionar(Snake snake) {
+        // Puede implementarse lógica adicional si es necesario
     }
 }
